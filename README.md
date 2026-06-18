@@ -113,6 +113,18 @@ def prepro3(image):
     return closing
 ```
 
+### Preprocessing 4: Grayscale + Thresholding + Morfologi Opening + Morfologi Closing
+Resize gambar menggunakan ke ukuran 256×256 untuk menyeragamkan dimensi seluruh citra sebelum diproses lebih lanjut, sehingga setiap gambar memiliki resolusi yang konsisten sebagai input preprocessing. Konversi ke grayscale dilakukan untuk mengubah citra BGR 3-channel menjadi 1-channel abu-abu, yang diperlukan agar operasi konvolusi berikutnya dapat diterapkan dan GLCM dapat mengekstrak fitur tekstur. Smoothing dengan Mean Filter 3×3 melalui konvolusi manual diterapkan untuk meratakan nilai piksel di setiap window 3×3, sehingga noise acak pada permukaan roti berkurang sebelum proses penajaman dilakukan. Sharpening dengan kernel Laplacian 3×3 melalui konvolusi manual digunakan untuk mempertajam tepi dan perbedaan intensitas pada area berjamur, sehingga batas antara area jamur dan roti segar menjadi lebih menonjol dan GLCM dapat mengekstrak fitur tekstur yang lebih diskriminatif antara kelas berjamur dan tidak berjamur.
+```python
+def prepro4(image):
+    resized = cv.resize(image, RESIZE_PREPRO, interpolation=cv.INTER_AREA)
+    gray    = cv.cvtColor(resized, cv.COLOR_BGR2GRAY) if resized.ndim == 3 else resized.copy()
+    gray    = gray.astype(np.uint8)
+    smooth  = smoothing_mean(gray)
+    sharp   = sharpening_laplacian(smooth)
+    return sharp
+```
+
 ## Feature Extraction
 Pada tahapan ini, dilakukan ekstraksi fitur dengan metode **Gray Level Co-occurrence Matrix (GLCM)**. GLCM dihitung dengan sudut 0°, 45°, 90°, dan 135° (simetris), serta dilakukan uji coba dengan distance 1-5. Fitur yang dihitung meliputi:
 
