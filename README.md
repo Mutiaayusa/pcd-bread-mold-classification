@@ -18,6 +18,7 @@ Perlu diperhatikan bahwa yang menjadi acuan pada project ini adalah tepatnya pem
 - **Percobaan Pertama** (1 Preprocessing: Grayscale + Histogram Equalization + Normalisasi)
 - **Percobaan Kedua** (2 Preprocessing: Grayscale + Histogram Equalization + Normalisasi, Grayscale + Median Filter + Thresholding)
 - **Percobaan Ketiga** (3 Preprocessing: Grayscale + Histogram Equalization + Normalisasi, Grayscale + Median Filter + Thresholding, Grayscale + Thresholding + Morfologi Opening + Morfologi Closing)
+- **Percobaan Keeempat** (4 Preprocessing: Resize + Grayscale + Smoothing (Mean Filter) + Sharpening)
 
 Dari setiap percobaan, perhatikan bagaimana perbedaan akurasinya untuk setiap model: Random Forest berapa, SVM berapa, KNN berapa. Berikut ini adalah Tahapan Umum yang digunakan dalam Machine Learning.
 
@@ -50,7 +51,7 @@ print(Output: file_name)
 
 Output: Contoh Visualisasi Distribusi Data:
 
-![image](https://github.com/user-attachments/assets/bcf4e18c-d6a5-4627-a4d3-c4a2fdb35e8c)
+<img width="1389" height="848" alt="3b1049dd-b606-4079-8431-cc97d435875b" src="https://github.com/user-attachments/assets/9410e13e-387a-49ce-9d67-7e34e57eb1a6" />
 
 Output: Contoh Sample Data:
 ![image](https://github.com/user-attachments/assets/0084d31f-386e-49f9-9de5-4863ec4d73de)
