@@ -18,6 +18,7 @@ Perlu diperhatikan bahwa yang menjadi acuan pada project ini adalah tepatnya pem
 - **Percobaan Pertama** (1 Preprocessing: Grayscale + Histogram Equalization + Normalisasi)
 - **Percobaan Kedua** (2 Preprocessing: Grayscale + Histogram Equalization + Normalisasi, Grayscale + Median Filter + Thresholding)
 - **Percobaan Ketiga** (3 Preprocessing: Grayscale + Histogram Equalization + Normalisasi, Grayscale + Median Filter + Thresholding, Grayscale + Thresholding + Morfologi Opening + Morfologi Closing)
+- **Percobaan Keeempat** (4 Preprocessing: Resize + Grayscale + Smoothing (Mean Filter) + Sharpening)
 
 Dari setiap percobaan, perhatikan bagaimana perbedaan akurasinya untuk setiap model: Random Forest berapa, SVM berapa, KNN berapa. Berikut ini adalah Tahapan Umum yang digunakan dalam Machine Learning.
 
@@ -50,7 +51,7 @@ print(Output: file_name)
 
 Output: Contoh Visualisasi Distribusi Data:
 
-![image](https://github.com/user-attachments/assets/bcf4e18c-d6a5-4627-a4d3-c4a2fdb35e8c)
+<img width="1389" height="848" alt="3b1049dd-b606-4079-8431-cc97d435875b" src="https://github.com/user-attachments/assets/9410e13e-387a-49ce-9d67-7e34e57eb1a6" />
 
 Output: Contoh Sample Data:
 ![image](https://github.com/user-attachments/assets/0084d31f-386e-49f9-9de5-4863ec4d73de)
@@ -110,6 +111,18 @@ def prepro3(image):
     # Morfologi Closing
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
     return closing
+```
+
+### Preprocessing 4: Grayscale + Thresholding + Morfologi Opening + Morfologi Closing
+Resize gambar menggunakan ke ukuran 256×256 untuk menyeragamkan dimensi seluruh citra sebelum diproses lebih lanjut, sehingga setiap gambar memiliki resolusi yang konsisten sebagai input preprocessing. Konversi ke grayscale dilakukan untuk mengubah citra BGR 3-channel menjadi 1-channel abu-abu, yang diperlukan agar operasi konvolusi berikutnya dapat diterapkan dan GLCM dapat mengekstrak fitur tekstur. Smoothing dengan Mean Filter 3×3 melalui konvolusi manual diterapkan untuk meratakan nilai piksel di setiap window 3×3, sehingga noise acak pada permukaan roti berkurang sebelum proses penajaman dilakukan. Sharpening dengan kernel Laplacian 3×3 melalui konvolusi manual digunakan untuk mempertajam tepi dan perbedaan intensitas pada area berjamur, sehingga batas antara area jamur dan roti segar menjadi lebih menonjol dan GLCM dapat mengekstrak fitur tekstur yang lebih diskriminatif antara kelas berjamur dan tidak berjamur.
+```python
+def prepro4(image):
+    resized = cv.resize(image, RESIZE_PREPRO, interpolation=cv.INTER_AREA)
+    gray    = cv.cvtColor(resized, cv.COLOR_BGR2GRAY) if resized.ndim == 3 else resized.copy()
+    gray    = gray.astype(np.uint8)
+    smooth  = smoothing_mean(gray)
+    sharp   = sharpening_laplacian(smooth)
+    return sharp
 ```
 
 ## Feature Extraction
@@ -186,4 +199,5 @@ def plot_confusion_matrix(dataset, dataset, title):
 ```
 
 Output: Contoh Confusion Matrix
-![image](https://github.com/user-attachments/assets/aec4ac9c-e687-4354-b02d-833caf26db6b)
+<img width="1589" height="502" alt="8f7708ab-317d-4969-b08d-d170eab7955b" src="https://github.com/user-attachments/assets/0dd063de-8131-4ea2-957e-7c4e04e4a5b3" />
+
